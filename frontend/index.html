@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ErdonTask Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <h2>ErdonTask</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-target="view-dashboard"><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li data-target="view-tasks"><a href="#"><i class="fa-solid fa-list-check"></i> My Tasks</a></li>
+                <li data-target="view-analytics"><a href="#"><i class="fa-solid fa-chart-pie"></i> Analytics</a></li>
+                <li data-target="view-settings"><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- VIEW: DASHBOARD -->
+            <div id="view-dashboard" class="view-section active">
+                <header>
+                    <div class="header-left">
+                        <h1>Welcome Back! 👋</h1>
+                        <p>Here is your productivity dashboard for today.</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="profile-pic">
+                            <img src="https://ui-avatars.com/api/?name=Erdon&background=0D8ABC&color=fff" alt="User Profile">
+                        </div>
+                    </div>
+                </header>
+
+                <div class="stats-container">
+                    <div class="stat-card glass-panel">
+                        <div class="stat-info">
+                            <h3>Total Tasks</h3>
+                            <p class="stat-number" id="stat-total">0</p>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-info">
+                            <h3>Completed</h3>
+                            <p class="stat-number" id="stat-completed">0</p>
+                        </div>
+                        <div class="stat-icon" style="color: var(--success);"><i class="fa-solid fa-check-double"></i></div>
+                    </div>
+                    <div class="stat-card glass-panel selected">
+                        <div class="stat-info">
+                            <h3>Pending</h3>
+                            <p class="stat-number" id="stat-pending">0</p>
+                        </div>
+                        <div class="stat-icon" style="color: var(--accent);"><i class="fa-solid fa-hourglass-half"></i></div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="task-list-container glass-panel">
+                        <div class="section-header">
+                            <h2>Recent Tasks</h2>
+                        </div>
+                        <div id="dashboard-tasks-container" class="tasks-scroll">
+                            <div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="add-task-container glass-panel">
+                        <div class="section-header">
+                            <h2>Create New Task</h2>
+                        </div>
+                        <form id="add-task-form">
+                            <div class="input-group">
+                                <label for="task-title">Title</label>
+                                <input type="text" id="task-title" required placeholder="What needs to be done?">
+                            </div>
+                            <div class="input-group">
+                                <label for="task-desc">Description (Optional)</label>
+                                <textarea id="task-desc" rows="4" placeholder="Add specifics..."></textarea>
+                            </div>
+                            <button type="submit" class="primary-btn">
+                                <i class="fa-solid fa-plus"></i> Add Task
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: MY TASKS -->
+            <div id="view-tasks" class="view-section hidden">
+                <header>
+                    <div class="header-left">
+                        <h1>My Tasks</h1>
+                        <p>A detailed view of all your tasks.</p>
+                    </div>
+                </header>
+                
+                <div class="content-grid single-col">
+                    <div class="task-list-container glass-panel full-height">
+                        <div class="section-header space-between">
+                            <h2>All Tasks</h2>
+                            <div class="task-filters">
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="pending">Pending</button>
+                                <button class="filter-btn" data-filter="completed">Completed</button>
+                            </div>
+                        </div>
+                        <div id="full-tasks-container" class="tasks-scroll large">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: ANALYTICS -->
+            <div id="view-analytics" class="view-section hidden">
+                <header>
+                    <div class="header-left">
+                        <h1>Analytics</h1>
+                        <p>Analyze your productivity performance.</p>
+                    </div>
+                </header>
+
+                <div class="content-grid">
+                    <div class="glass-panel">
+                        <div class="section-header">
+                            <h2>Completion Rate</h2>
+                        </div>
+                        <div class="chart-container">
+                            <div class="circular-chart" id="completion-chart">
+                                <div class="inner-circle">
+                                    <span id="completion-percentage">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel">
+                        <div class="section-header">
+                            <h2>Task Statistics</h2>
+                        </div>
+                        <div class="stats-list">
+                            <div class="stat-row">
+                                <span>Total Created Tasks:</span>
+                                <strong id="metric-total">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Completed Tasks:</span>
+                                <strong id="metric-completed">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Tasks Remaining:</span>
+                                <strong id="metric-pending">0</strong>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="analytics-progress-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: SETTINGS -->
+            <div id="view-settings" class="view-section hidden">
+                <header>
+                    <div class="header-left">
+                        <h1>Settings</h1>
+                        <p>Manage your application preferences.</p>
+                    </div>
+                </header>
+
+                <div class="content-grid single-col">
+                    <div class="glass-panel settings-panel">
+                        <div class="section-header">
+                            <h2>Danger Zone</h2>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Delete All Data</h4>
+                                <p>Once you delete your tasks, there is no going back. Please be certain.</p>
+                            </div>
+                            <button id="btn-delete-all" class="danger-btn"><i class="fa-solid fa-trash"></i> Delete Everything</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
